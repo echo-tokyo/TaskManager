@@ -7,7 +7,7 @@ RUN chown nginx:nginx /var/cache/nginx/
 # main nginx conf
 COPY ./nginx.conf /etc/nginx/nginx.conf
 # included nginx confs
-COPY ./http-site.conf /etc/nginx/conf.d/http-site.conf
+COPY ./http_site.conf /etc/nginx/conf.d/http_site.conf
 
 #RUN apk add npm
 
