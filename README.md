@@ -1,7 +1,8 @@
-# WEBPRACTIC CASE
+# React + Vite
 
-## Database schema 
- - [DB Designer](https://erd.dbdesigner.net/designer/schema/1729874948-taskmanager)
- 
-## Case Information PDF File
- - [Case](https://vk.com/doc102343170_677174058?hash=c5wCdcg6JWGD1j3PSYaSj2eIFPWtNwGIdToSzGlKsV4&dl=KqfDGFc1oxzgzaibZPR21ZsXeUVuapC3bCX7oZ2jgJX)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
