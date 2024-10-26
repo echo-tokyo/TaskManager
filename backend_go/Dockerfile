@@ -46,7 +46,7 @@ RUN mkdir /logs
 WORKDIR /root
 # copy compiled file and Makefile to run app
 COPY --from=build /go/src/github.com/echo-tokyo/TaskManager/backend_go/Makefile .
-COPY --from=build /go/src/github.com/echo-tokyo/TaskManager/backend_go/GoShortURL .
+COPY --from=build /go/src/github.com/echo-tokyo/TaskManager/backend_go/go_app .
 
 # run app
 CMD ["make", "prod"]
