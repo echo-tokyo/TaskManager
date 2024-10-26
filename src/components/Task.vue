@@ -56,6 +56,10 @@ function deleteTask(){
 }
 .task-title{
     font-size: 18px;
+    width:90%;
+    white-space: nowrap; /* Запрет переноса текста */
+    overflow: hidden; /* Скрытие переполненного текста */
+    text-overflow: ellipsis; /* Добавление троеточия */
 }
 .task-executor {
     font-size: 13px;

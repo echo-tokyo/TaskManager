@@ -46,11 +46,17 @@ const queryVal = ref('')
         }) 
     }
     const selectedOption = ref('')
+    const minMaxDate = ref({
+        min: '',
+        max: ''
+    })
     function inputDateFrom(e){
         console.log(e.target.value)
+        minMaxDate.value.min = e.target.value
     }
     function inputDateTo(e){
         console.log(e.target.value)
+        minMaxDate.value.max = e.target.value
     }
 </script>
 
@@ -60,9 +66,9 @@ const queryVal = ref('')
             <a href="https://webpractik.ru/" target="_blank" title="Сайт вебпрактик"><img class="header-nav__logo" src="../../public/logo.svg" alt="webpractice logo"></a>
             <div class="header-nav__date">
                 <p>С</p>
-                <input class="header-nav__date-input" @input="inputDateFrom" type="date" />
+                <input class="header-nav__date-input" @input="inputDateFrom" type="date" :max="minMaxDate.max"/>
                 <p>По</p>
-                <input class="header-nav__date-input" @input="inputDateTo" type="date" />
+                <input class="header-nav__date-input" @input="inputDateTo" type="date" :min="minMaxDate.min"/>
             </div>
             <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
             <p>{{ searchInput }}</p>
@@ -90,7 +96,6 @@ const queryVal = ref('')
     border-radius: 30px;
     border: 1px solid #d1d1d1;
     padding-left: 15px;
-    padding-right: ;
 }
 #filter{
     height: 30px;
