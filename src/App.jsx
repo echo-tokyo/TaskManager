@@ -28,7 +28,6 @@ function App() {
       setInpVal('')
     }
   }
-  console.log(users)
 
   const modules = {
     toolbar: [
@@ -65,16 +64,20 @@ function App() {
     setCode(content);
   };
 
+  const getSelectData = (e) => {
+    console.log(e.target.value)
+  }
+
   return (
     <>
       <div className="modalTask">
         <div className="modalTop">
           <h2 className=''>Заголовок задачи</h2>
           <img className='cross' src="../public/cross-svgrepo-com (1) 2.svg" alt="" />
-          <select name="" id="">
-            <option value="">Беклог</option>
-            <option value="">В процессе</option>
-            <option value="">Завершено</option>
+          <select name="status" id="" onChange={(e) => getSelectData(e)}>
+            <option value="backlog">Беклог</option>
+            <option value="processing">В процессе</option>
+            <option value="finished">Завершено</option>
           </select>
           <div className="modalTask__cards">
             <div className="modalTask__card-users">
