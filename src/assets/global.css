@@ -7,11 +7,8 @@
 	font-family: 'proximaNova bold'; 
 	src: url(../fonts/proximanova_bold.otf); 
 }
-body, html{
+body, html, #root{
 	width: 100vw;
-	height: 100vh;
-}
-#root{
 	height: 100%;
 }
 h1{

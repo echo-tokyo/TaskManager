@@ -1,11 +1,11 @@
 .modalTask {
-	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 	align-items: center;
 	padding: 50px;
 	width: 100%;
+	gap: 40px;
+	height: fit-content;
 }
 .modalTop{
 	display: flex;
@@ -46,12 +46,32 @@ select {
 	display: flex;
 	gap: 10px;
 	align-items: center;
+	flex-wrap: wrap;
+}
+.modalTask__card-header, .modalTask__desc-header{
+	display: flex;
+	justify-content: space-between;
+}
+.ql-container{
+	border-bottom-left-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
+.ql-toolbar{
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}
+.ql-toolbar.ql-snow{
+	padding: 5px 30px 5px 30px;
+}
+.ql-editor{
+	padding: 5px 30px 5px 30px;
 }
 .modalBottom{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
+	justify-content: flex-end;
 }
 .modalBottom input{
 	width: 200px;

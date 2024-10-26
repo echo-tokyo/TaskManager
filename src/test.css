@@ -4,5 +4,5 @@ iframe{
 	border: 0;
 }
 body{
-	overflow: hidden;
+	overflow-x: hidden;
 }
