@@ -3,7 +3,8 @@ package urls
 import (
 	echo "github.com/labstack/echo/v4"
 
-	testUrls "github.com/echo-tokyo/TaskManager/test_app/urls"
+	testUrls "github.com/echo-tokyo/TaskManager/app_test/urls"
+	tasksUrls "github.com/echo-tokyo/TaskManager/app_tasks/urls"
 )
 
 
@@ -11,4 +12,7 @@ import (
 func InitUrlRouters(echoApp *echo.Echo) {
 	apiTestGroup := echoApp.Group("/api/test")
 	testUrls.RouterGroup(apiTestGroup)
+
+	apiTasksGroup := echoApp.Group("/api/tasks")
+	tasksUrls.RouterGroup(apiTasksGroup)
 }

@@ -4,7 +4,7 @@ import (
 	echo "github.com/labstack/echo/v4"
 
 	coreMiddlewares "github.com/echo-tokyo/TaskManager/core/middlewares"
-	"github.com/echo-tokyo/TaskManager/test_app/handlers"
+	"github.com/echo-tokyo/TaskManager/app_test/handlers"
 )
 
 

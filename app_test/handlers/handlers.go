@@ -1,10 +1,16 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	echo "github.com/labstack/echo/v4"
 
+    
+    "github.com/echo-tokyo/TaskManager/core/db/models"
+    
+    coreDB "github.com/echo-tokyo/TaskManager/core/db"
+    coreErrors "github.com/echo-tokyo/TaskManager/core/errors"
     coreServices "github.com/echo-tokyo/TaskManager/core/services"
 )
 
@@ -21,7 +27,22 @@ func Auth(context echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return context.JSON(http.StatusOK, map[string]int{"user_id": userID})
+
+	dbConnect, err := coreDB.GetConnection()
+	if err != nil {
+		return coreErrors.DBConnectError
+	}
+
+	var requestUser models.User
+	findResult := dbConnect.Where("id = ?", userID).First(&requestUser)
+	// если юзер с таким ID не найден
+	if err = findResult.Error; err != nil {
+		return err
+	}
+
+	fmt.Println(requestUser)
+
+	return context.JSON(http.StatusOK, requestUser)
 }
 
 
