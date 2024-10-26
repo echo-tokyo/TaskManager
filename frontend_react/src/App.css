@@ -4,15 +4,15 @@
 	align-items: center;
 	padding: 50px;
 	width: 100%;
-	gap: 40px;
-	height: fit-content;
+	height: 100vh;
+	justify-content: space-between;
 }
 .modalTop{
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+	height: 100%;
 }
 .cross {
 	right: 50px;
@@ -29,9 +29,24 @@ select {
 .modalTask__cards {
 	display: flex;
 	flex-direction: column;
+	height: 75%;
+	overflow-y: scroll;
 	gap: 10px;
 	width: 100%;
 	margin-top: 20px;
+}
+.modalTask__editor{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 5px;
+}
+.modalTask__editor p{
+	padding-right: 30px;
+	cursor: pointer;
+}
+.quill{
+	width: 100%;
 }
 .modalTask__card-users,
 .modalTask__card-desc {

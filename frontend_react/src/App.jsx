@@ -4,6 +4,10 @@ import ReactQuill from 'react-quill'
 
 function App() {
   // FIXME: старая библа или код quill, заменить в будущем
+  const urlParams = new URLSearchParams(window.location.search)
+  const taskId = urlParams.get('task_id')
+  console.log(taskId)
+  
   const [isEditing, setIsEditing] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
   const [inpVal, setInpVal] = useState('')
@@ -28,7 +32,7 @@ function App() {
       setInpVal('')
     }
   }
-
+  
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -36,7 +40,7 @@ function App() {
       [{ list: "ordered" }, { list: "bullet" }],
       ["link"],
       [{ color: ["red", "#785412"] }],
-      [{ background: ["red", "#785412"] }]
+      [{ background: ["red", "#785412"] }],
     ]
   };
 
@@ -57,17 +61,16 @@ function App() {
     "size",
     "font"
   ];
-
   const [code, setCode] = useState("hellllo");
   // eslint-disable-next-line no-unused-vars
   const handleProcedureContentChange = (content, delta, source, editor) => {
     setCode(content);
   };
-
+  
   const getSelectData = (e) => {
     console.log(e.target.value)
   }
-
+  
   return (
     <>
       <div className="modalTask">
@@ -92,22 +95,25 @@ function App() {
                 }
               </div>
             </div>
+            {isEditing === false ? (
             <div className="modalTask__card-desc">
               <div className="modalTask__desc-header">
                 <h3>Описание</h3>
-                <button onClick={() => setIsEditing(!isEditing)}>/</button>
+                <button onClick={() => setIsEditing(true)}>/</button>
               </div>
               <div className="description-preview" dangerouslySetInnerHTML={{ __html: code }}/>
             </div>
-            {isEditing &&
-            <ReactQuill
-              theme="snow"
-              modules={modules}
-              formats={formats}
-              value={code}
-              onChange={handleProcedureContentChange}
-            />
-            }
+            ) : (
+            <div className="modalTask__editor">
+              <p onClick={() => setIsEditing(false)}>Готово</p>
+              <ReactQuill
+                theme="snow"
+                modules={modules}
+                formats={formats}
+                value={code}
+                onChange={handleProcedureContentChange}
+              />
+            </div>)}
           </div>
         </div>
         <form action="" className='modalBottom'>
