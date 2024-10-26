@@ -1,0 +1,73 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: task_manager_mysql
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - mysql_database:/var/lib/mysql:rw
+    networks:
+      proj_network:
+        ipv4_address: 172.16.1.5
+
+  backend_go:
+    build:
+      context: ./backend_go
+      dockerfile: Dockerfile
+    container_name: task_manager_backend_go
+    restart: always
+    env_file:
+      - .env
+    expose:
+      - "8080"
+    networks:
+      proj_network:
+        ipv4_address: 172.16.1.6
+    depends_on:
+      - db
+      
+  backend_django:
+    build:
+      context: ./django
+      dockerfile: Dockerfile
+    container_name: task_manager_backend_django
+    restart: always
+    env_file:
+      - .env
+    expose:
+      - "8000"
+    networks:
+      proj_network:
+        ipv4_address: 172.16.1.7
+    depends_on:
+      - db
+
+  web_server:
+    build:
+      context: ./web_server
+      dockerfile: Dockerfile
+    container_name: task_manager_web_server
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      proj_network:
+        ipv4_address: 172.16.1.8
+    depends_on:
+      - backend_go
+      - backend_django
+
+
+networks:
+  proj_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.1.0/24
+
+
+volumes:
+  mysql_database:
+
+
