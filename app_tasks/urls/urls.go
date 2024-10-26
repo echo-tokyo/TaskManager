@@ -9,10 +9,6 @@ import (
 
 
 func RouterGroup(group *echo.Group) {
-	// test
-	group.GET("/all", handlers.Tasks)
-	group.GET("/executor", handlers.UserTasks, coreMiddlewares.ValidateJWTMiddleware, coreMiddlewares.TokenIsAccessMiddleware)
-	// prod
 	group.POST("/add-executor", handlers.AddExecutor, coreMiddlewares.ValidateJWTMiddleware, coreMiddlewares.TokenIsAccessMiddleware)
-	group.POST("/date-filter", handlers.DateFilter, coreMiddlewares.ValidateJWTMiddleware, coreMiddlewares.TokenIsAccessMiddleware)
+	group.GET("/date-filter", handlers.DateFilter, coreMiddlewares.ValidateJWTMiddleware, coreMiddlewares.TokenIsAccessMiddleware)
 }

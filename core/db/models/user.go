@@ -7,7 +7,7 @@ import (
 
 // модель юзера
 type User struct {
-	ID			uint 		`gorm:"not null; primarykey; type: BIGINT" json:"-"`
+	ID			uint 		`gorm:"not null; primarykey; type: BIGINT" json:"id"`
 	Username	string 		`gorm:"not null; size:20; unique" json:"username"`
 	Password	string 		`gorm:"not null; size:128" json:"-"`
 	FIO 		string 		`gorm:"not null; size:50" json:"fio"`
