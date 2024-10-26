@@ -1,0 +1,33 @@
+@font-face {
+	font-family: 'proximaNova regular'; 
+	src: url(../fonts/proximanova_regular.ttf); 
+}
+ 
+@font-face {
+	font-family: 'proximaNova bold'; 
+	src: url(../fonts/proximanova_bold.otf); 
+}
+body, html, #root{
+	width: 100vw;
+	height: 100%;
+}
+h1{
+	font-size: 66px;
+	font-family: "proximaNova bold";
+}
+
+h2{
+	font-size: 32px;
+	font-family: "proximaNova bold", sans-serif;
+}
+
+h3 {
+	font-size: 22px;
+	font-family: "proximaNova bold";
+}
+
+p, a{
+	font-size: 16px;
+	font-family: 'proximaNova regular';
+	color: black;
+}
