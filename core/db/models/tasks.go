@@ -9,7 +9,7 @@ import (
 type Board struct {
 	ID			uint 		`gorm:"not null; primarykey; type: BIGINT" json:"id"`
 	Title 		string 		`gorm:"not null; size:50" json:"title"`
-	CreatedAt	time.Time 	`gorm:"not null; autoCreateTime:true" json:"createdAt"`
+	CreatedAt	time.Time 	`gorm:"not null; autoCreateTime:true" json:"created_at"`
 	// ассоциация задач
 	Tasks     	[]Task    	`gorm:"foreignKey:BoardId" json:"tasks"`
 }
@@ -23,11 +23,11 @@ func (Board) TableName() string {
 type Task struct {
 	ID			uint 		`gorm:"not null; primarykey; type: BIGINT" json:"id"`
 	Title 		string 		`gorm:"not null; size:50" json:"title"`
-	TaskDesc	string 		`gorm:"not null; type: LONGTEXT" json:"taskDesc"`
+	TaskDesc	string 		`gorm:"not null; type: LONGTEXT" json:"task_desc"`
 	Status 		string 		`gorm:"not null; size:20; default:backlog" json:"status"`
-	BoardId 	int 		`gorm:"not null; type: BIGINT; index" json:"boardId"`
-	CreatedAt	time.Time 	`gorm:"not null; autoCreateTime:true" json:"createdAt"`
-	// ассоциация c Board
+	BoardId 	int 		`gorm:"not null; type: BIGINT; index" json:"board_id"`
+	CreatedAt	time.Time 	`gorm:"not null; autoCreateTime:true" json:"created_at"`
+	// ассоциация c доской, к которой принадлежат задачи
 	Board     	Board     	`gorm:"foreignKey:BoardId; constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"-"`
 	// ассоциация исполнителей задач
 	Executors []User `gorm:"many2many:boards_task_executors;joinForeignKey:task_id;JoinReferences:customuser_id" json:"executors"`

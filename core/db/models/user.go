@@ -7,15 +7,15 @@ import (
 
 // модель юзера
 type User struct {
-	ID			uint 		`gorm:"not null; primarykey; type: BIGINT" json:"id"`
+	ID			uint 		`gorm:"not null; primarykey; type: BIGINT" json:"-"`
 	Username	string 		`gorm:"not null; size:20; unique" json:"username"`
-	Password	string 		`gorm:"not null; size:128" json:"password"`
+	Password	string 		`gorm:"not null; size:128" json:"-"`
 	FIO 		string 		`gorm:"not null; size:50" json:"fio"`
-	CreatedAt	time.Time 	`gorm:"not null; autoCreateTime" json:"createdAt"`
-	JobTitle 	string 		`gorm:"null; size:50" json:"jobTitle"`
+	CreatedAt	time.Time 	`gorm:"not null; autoCreateTime" json:"-"`
+	JobTitle 	string 		`gorm:"null; size:50" json:"job_title"`
 	
 	// ассоциация задач, для которых юзер является исполнителем
-	Tasks []Task `gorm:"many2many:boards_task_executors;joinForeignKey:customuser_id;JoinReferences:task_id" json:"tasks"`
+	Tasks []Task `gorm:"many2many:boards_task_executors;joinForeignKey:customuser_id;JoinReferences:task_id" json:"-"`
 }
 // изменение названия таблицы в БД
 func (User) TableName() string {

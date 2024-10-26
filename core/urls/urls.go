@@ -10,9 +10,9 @@ import (
 
 // подгрузка urls каждого микроприложения и их общая настройка
 func InitUrlRouters(echoApp *echo.Echo) {
-	apiTestGroup := echoApp.Group("/api/test")
+	apiTestGroup := echoApp.Group("/api/v2/test")
 	testUrls.RouterGroup(apiTestGroup)
 
-	apiTasksGroup := echoApp.Group("/api/tasks")
+	apiTasksGroup := echoApp.Group("/api/v2/tasks")
 	tasksUrls.RouterGroup(apiTasksGroup)
 }
