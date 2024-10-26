@@ -46,21 +46,24 @@ const queryVal = ref('')
         }) 
     }
     const selectedOption = ref('')
-
+    function inputDateFrom(e){
+        console.log(e.target.value)
+    }
+    function inputDateTo(e){
+        console.log(e.target.value)
+    }
 </script>
 
 <template>
     <header class="header">
         <nav class="header-nav">
             <a href="https://webpractik.ru/" target="_blank" title="Сайт вебпрактик"><img class="header-nav__logo" src="../../public/logo.svg" alt="webpractice logo"></a>
-            <div>
-            <select name="filter" id="filter" v-model="selectedOption" @onChange="filter()">
-                <option value="default">По умолчанию</option>
-                <option value="dateUp">По возрастанию</option>
-                <option value="dateDown">По убыванию</option>
-            </select>
-            {{ selectedOption }}
-        </div>
+            <div class="header-nav__date">
+                <p>С</p>
+                <input class="header-nav__date-input" @input="inputDateFrom" type="date" />
+                <p>По</p>
+                <input class="header-nav__date-input" @input="inputDateTo" type="date" />
+            </div>
             <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
             <p>{{ searchInput }}</p>
             <h3 class="header-nav__exit">Выйти</h3>
@@ -77,6 +80,18 @@ const queryVal = ref('')
 </template>
 
 <style scoped>
+.header-nav__date{
+    display: flex;
+    align-items: center;
+    gap:5px;
+}
+.header-nav__date input{
+    height: 30px;
+    border-radius: 30px;
+    border: 1px solid #d1d1d1;
+    padding-left: 15px;
+    padding-right: ;
+}
 #filter{
     height: 30px;
     border-radius: 30px;

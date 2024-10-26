@@ -17,19 +17,29 @@ watch(props.tasks, () => {
 function addTask() {
     props.tasks.push({title: "Без названия", executor:"", date: Date.now()})
 }
+
+function onTaskClicked(e){
+    console.log(e)
+}
+const isModalActivated = ref(false)
 </script>
 <template>
+    <div class="modal-container" v-if="isModalActivated" @click="isModalActivated = false"></div>
+    <div class="modal" v-if="isModalActivated">
+
+    </div>
     <div class="card">
         <h3 class="card__title">{{ props.title }}</h3>
 
-        <draggable         
+        <draggable     
+            
         class="container-for-tasks"
         :list="props.tasks"
         group="people"
         @change="log"
         :itemKey="props.title" >
             <template  #item="{ element: tasks }" tag="div">
-                <Task :task="tasks"/>
+                <Task @click="(event) => onTaskClicked(event), isModalActivated = true" :task="tasks"/>
             </template>
         </draggable>
         <!-- <div :class="'container-for-tasks'">
@@ -41,6 +51,28 @@ function addTask() {
 </template>
 
 <style>
+.modal-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.modal{
+    border-radius: 20px;
+    left: 20vw;
+    top: 10vh;
+    position: absolute;
+    background-color: #fff;
+    width: 60vw;
+    height: 80vh;
+    z-index: 11;
+}
 .add-task {
     display: flex;
     justify-content: center;
@@ -76,8 +108,8 @@ function addTask() {
 
 ::-webkit-scrollbar {
     position: absolute;
-    width: 4px;
-    height: 8px;
+    width: 3px;
+    height: 3px;
     background-color: #D9D9D9;
 }
 

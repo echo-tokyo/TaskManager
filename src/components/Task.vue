@@ -15,15 +15,17 @@ function setExecutor(user) {
 function deleteTask(){
     alert('Удален ' + props.task.title)
 }
+
 </script>
 
 <template>
+    
     <div class="container-for-task">
-        <div class="task-text">
-            <img @click="deleteTask()" id="cross" src="../../public/cross.svg" alt="delete task button">
+        <div class="task-text" >
+            <img @click.stop="deleteTask" id="cross" src="../../public/cross.svg" alt="delete task button">
             <p class="task-title">{{ props.task.title }}</p>
             <p class="task-executor" v-if="props.task.executor">{{ props.task.executor }}</p>
-            <p class="task-noexecutor" v-else @click="setExecutor(user())">Взять задачу</p>
+            <p class="task-noexecutor" v-else @click.stop="setExecutor(user())">Взять задачу</p>
         </div>
 
     </div>
@@ -31,6 +33,7 @@ function deleteTask(){
 </template>
 
 <style scoped>
+
 #cross{
     position: absolute;
     right: 10px;
