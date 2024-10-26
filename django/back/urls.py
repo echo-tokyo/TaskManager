@@ -15,10 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
-from boards.views import PingView
+from boards.views import PingView, BoardView, TaskAPIView
 from users.views import CustomUserAPIView
 
 urlpatterns = [
@@ -30,4 +30,7 @@ urlpatterns = [
 
     path('api/ping/', PingView.as_view(), name='ping'),
     path('api/users/', CustomUserAPIView.as_view(), name='users'),
+    path('api/boards/', BoardView.as_view(), name='boards'),
+    re_path('api/tasks(/(?P<pk>\d+))?/?$', TaskAPIView.as_view(), name='tasks'),
+
 ]

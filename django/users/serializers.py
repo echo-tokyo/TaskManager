@@ -5,7 +5,7 @@ from users.models import CustomUser
 class CustomUserSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     username = serializers.CharField(max_length=20)
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, required=False)
     fio = serializers.CharField(max_length=50)
     is_staff = serializers.BooleanField(default=False)
     job_title = serializers.CharField(max_length=50)
