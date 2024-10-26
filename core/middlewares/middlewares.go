@@ -30,7 +30,7 @@ func checkTokenType(context echo.Context, tokenType string) error {
         return coreErrors.GetTokenClaimsError
     }
 
-    // приведение значенгия типа токена к string
+    // приведение значения типа токена к string
     contextTokenType, ok := tokenClaims["token_type"].(string)
     if !ok {
         return coreErrors.GetTokenTypeError
