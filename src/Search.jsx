@@ -63,7 +63,7 @@ function Search() {
     </select>
     <input type="text" className='search'/>
     <div className="cards">
-      {taskList.map(el => <div key={el.id} className='card'><p className='task'>{el.taskName}</p></div>)}
+      {taskList.map(el => <div key={el.id} className='card'><p className='task'>{el.taskName} | {el.date}</p></div>)}
     </div>
     </>
   )
