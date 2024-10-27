@@ -112,9 +112,11 @@ function addTask() {
     }
 
 }
-
+const currentTask = ref()
 function onTaskClicked(e) {
-    console.log(e)
+    isIframeActivated.value = true
+    currentTask.value = e.srcElement.id
+    console.log(currentTask.value)
 }
 const isModalActivated = ref(false)
 const isIframeActivated = ref(false)
@@ -122,8 +124,8 @@ const isIframeActivated = ref(false)
 <template>
     <div class="modal-container" v-if="isModalActivated || isIframeActivated" @click="isModalActivated = false, isIframeActivated = false"></div>
     <div class="iframe-wrapper" v-if="isIframeActivated">
-        <iframe class="iframe" src="http://192.168.30.4:5173/" frameborder="0" ></iframe>
-        <img src="../../public/cross.svg" alt="">
+        <iframe class="iframe" :src="'http://192.168.30.4:5173/?task_id=' + currentTask" frameborder="0" ></iframe>
+        <img src="../../public/cross.svg" alt="" @click="isIframeActivated = false">
     </div>
     <div class="modal" v-if="isModalActivated">
         <h2>Добавить задачу</h2>
@@ -136,7 +138,7 @@ const isIframeActivated = ref(false)
     
             <draggable class="container-for-tasks" :list="props.tasks" group="people" @change="log" :itemKey="props.title">
             <template #item="{ element: tasks }" tag="div">
-                <Task @click="(event) => onTaskClicked(event), isIframeActivated = true" :task="tasks" />
+                <Task @click="onTaskClicked($event)" :task="tasks" />
             </template>
         </draggable>
             <!-- <div :class="'container-for-tasks'">
