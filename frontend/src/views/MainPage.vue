@@ -2,6 +2,12 @@
 import Card from '../components/Card.vue'
 import {onMounted, ref, computed} from 'vue'
 
+function getTasks(){
+    axios.get('http://193.188.23.216/api/v1/tasks/', {
+        headers
+    })
+}
+
 const tasks = ref({
     backlog:[
     {title: "Задача один", executor:"Коля Кравченко", date:'2021-01-01'},
@@ -30,20 +36,15 @@ const searchInput = document.querySelector('.search')
  
 const queryVal = ref('')
 
-    function search(e) { 
-        const tasksOnPage = document.querySelectorAll('.container-for-task')
-
-        console.log(queryVal.value)
-        console.log(tasksOnPage)
-        Array.from(tasksOnPage).forEach(task => { 
-            const taskText = task.textContent.toLowerCase(); 
-            console.log(task.textContent.toLowerCase())
-            if (taskText.includes(queryVal.value.toLowerCase())) { 
-                task.style.display = 'block' 
-            } else { 
-                task.style.display = 'none' 
-            } 
-        }) 
+    function search() { 
+        const tasksTitles = document.querySelectorAll('.task-title')
+        tasksTitles.forEach(el => {
+            if (el.textContent.toLowerCase().includes(queryVal.value.toLowerCase())) {
+                el.parentElement.parentElement.style.display = 'block'
+            } else {
+                el.parentElement.parentElement.style.display = 'none'
+            }
+        })
     }
     const selectedOption = ref('')
     const minMaxDate = ref({
@@ -71,7 +72,6 @@ const queryVal = ref('')
                 <input class="header-nav__date-input" @input="inputDateTo" type="date" :min="minMaxDate.min"/>
             </div>
             <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
-            <p>{{ searchInput }}</p>
             <h3 class="header-nav__exit">Выйти</h3>
         </nav>
     </header>

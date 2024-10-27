@@ -16,7 +16,11 @@ watch(props.tasks, () => {
 
 const nameOfTheTaskInModal = ref('')
 function addTask() {
-    props.tasks.push({title: nameOfTheTaskInModal.value, executor:"", date: Date.now()})
+    if(nameOfTheTaskInModal.value == ''){
+        props.tasks.push({title: "Без названия", executor:"", date: Date.now()})
+    }   else {
+        props.tasks.push({title: nameOfTheTaskInModal.value, executor:"", date: Date.now()})
+    }
 }
 
 function onTaskClicked(e){
@@ -113,6 +117,12 @@ const isIframeActivated = ref(false)
     font-size: 16px;
     margin-bottom: 20px;
     background-color: #7927E0;
+    transition-duration: 0.3s;
+}
+.modal input[type="button"]:hover {
+    cursor:pointer;
+    background-color: #914ee2;
+    transition-duration: 0.3s;
 }
 .add-task {
     display: flex;
@@ -160,8 +170,7 @@ const isIframeActivated = ref(false)
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #005DFF;
-    width: 20px;
+    background-color: #9e9e9e;
 }
 
 .card {
