@@ -45,12 +45,16 @@ class BoardView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class TaskAPIView(APIView):
     permission_classes = (IsAuthenticated, )
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
 
+        pk = kwargs.get('pk', None)
+        if pk:
+            task = Task.objects.get(pk=pk)
+            serializer = TaskSerializer(task)
+            return Response(serializer.data)
         tasks = Task.objects.all()
 
         backlog = []
