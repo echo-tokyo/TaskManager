@@ -18,22 +18,23 @@ RUN apk add npm
 # frontend
 # --------
 
-WORKDIR /app/frontend
-
-
 # install vue requirements
-COPY ./frontend/package.json ./vue
+WORKDIR /app/frontend/vue
+COPY ./frontend/package.json .
 RUN npm install
 
 # install react requirements
-COPY ./frontend_react/package.json ./react
+WORKDIR /app/frontend/react
+COPY ./frontend_react/package.json .
 RUN npm install
 
 
 # build vue
-COPY ./frontend ./vue
+WORKDIR /app/frontend/vue
+COPY ./frontend .
 RUN npm run build
 
 # build react
-COPY ./frontend_react ./react
+WORKDIR /app/frontend/react
+COPY ./frontend_react .
 RUN npm run build
