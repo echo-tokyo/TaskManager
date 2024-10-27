@@ -63,6 +63,7 @@ function refreshAccessToken() {
     })
     .catch(function (error) {
       console.log(error)
+      router.push('/signup')
     })
 }
 
