@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
     path('api/v1/ping/', PingView.as_view(), name='ping'),
-    path('api/v1/users/', CustomUserAPIView.as_view(), name='users'),
+    re_path('api/v1/users(/(?P<pk>\d+))?/?$', CustomUserAPIView.as_view(), name='users'),
     path('api/v1/boards/', BoardView.as_view(), name='boards'),
     re_path('api/v1/tasks(/(?P<pk>\d+))?/?$', TaskAPIView.as_view(), name='tasks'),
 

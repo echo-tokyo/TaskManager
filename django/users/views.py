@@ -17,7 +17,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 class CustomUserAPIView(APIView):
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if pk:
+            return Response(CustomUserSerializer(request.user).data)
         users = CustomUser.objects.all()
         serializer = CustomUserSerializer(users, many=True)
         return Response(serializer.data)
