@@ -65,9 +65,9 @@ class TaskAPIView(APIView):
 
         for task in serializer.data:
             if task['status'] == 'finished':
-                proccessing.append(task)
-            elif task['status'] == 'proccessing':
                 finished.append(task)
+            elif task['status'] == 'proccessing':
+                proccessing.append(task)
             else:
                 backlog.append(task)
 
