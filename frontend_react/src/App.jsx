@@ -4,21 +4,25 @@ import ReactQuill from 'react-quill'
 
 function App() {
   // FIXME: старая библа или код quill, заменить в будущем
+  const urlParams = new URLSearchParams(window.location.search)
+  const taskId = urlParams.get('task_id')
+  console.log(taskId)
+  
   const [isEditing, setIsEditing] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
   const [inpVal, setInpVal] = useState('')
   const [users, setUsers] = useState([
     {
       id: 1,
-      name: 'John II',
+      name: 'Иван',
     },
     {
       id: 2,
-      name: 'Johna II',
+      name: 'Иван2',
     },
     {
       id: 3,
-      name: 'John I',
+      name: 'Иван3',
     }
   ])
   
@@ -28,7 +32,7 @@ function App() {
       setInpVal('')
     }
   }
-
+  
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -36,7 +40,7 @@ function App() {
       [{ list: "ordered" }, { list: "bullet" }],
       ["link"],
       [{ color: ["red", "#785412"] }],
-      [{ background: ["red", "#785412"] }]
+      [{ background: ["red", "#785412"] }],
     ]
   };
 
@@ -57,23 +61,21 @@ function App() {
     "size",
     "font"
   ];
-
-  const [code, setCode] = useState("hellllo");
+  const [code, setCode] = useState('ыыыыыыыыы ыыыыыыы');
   // eslint-disable-next-line no-unused-vars
   const handleProcedureContentChange = (content, delta, source, editor) => {
     setCode(content);
   };
-
+  
   const getSelectData = (e) => {
     console.log(e.target.value)
   }
-
+  
   return (
     <>
       <div className="modalTask">
         <div className="modalTop">
           <h2 className=''>Заголовок задачи</h2>
-          <img className='cross' src="../public/cross-svgrepo-com (1) 2.svg" alt="" />
           <select name="status" id="" onChange={(e) => getSelectData(e)}>
             <option value="backlog">Беклог</option>
             <option value="processing">В процессе</option>
@@ -83,7 +85,7 @@ function App() {
             <div className="modalTask__card-users">
               <div className="modalTask__card-header">
                 <h3>Ответственный</h3>
-                <button onClick={() => setIsAdding(!isAdding)}>+</button>
+                <img src="../public/plus-large-svgrepo-com 1.svg" alt="" onClick={() => setIsAdding(!isAdding)}/>
               </div>
               <div className="modalTask__card-item">
                 {users.map((el, index) => <p key={el.id}>{el.name}{index !== users.length - 1 && ', '}</p>)}
@@ -92,22 +94,28 @@ function App() {
                 }
               </div>
             </div>
+            {isEditing === false ? (
+              <>
             <div className="modalTask__card-desc">
               <div className="modalTask__desc-header">
                 <h3>Описание</h3>
-                <button onClick={() => setIsEditing(!isEditing)}>/</button>
+                <img src="../public/edit-2-svgrepo-com 1.svg" alt="" onClick={() => setIsEditing(true)}/>
+                {/* <button onClick={() => setIsEditing(true)}>/</button> */}
               </div>
               <div className="description-preview" dangerouslySetInnerHTML={{ __html: code }}/>
             </div>
-            {isEditing &&
-            <ReactQuill
-              theme="snow"
-              modules={modules}
-              formats={formats}
-              value={code}
-              onChange={handleProcedureContentChange}
-            />
-            }
+              </>
+            ) : (
+            <div className="modalTask__editor">
+              <p onClick={() => setIsEditing(false)} className='modalTask__editor-done'>Готово</p>
+              <ReactQuill
+                theme="snow"
+                modules={modules}
+                formats={formats}
+                value={code}
+                onChange={handleProcedureContentChange}
+              />
+            </div>)}
           </div>
         </div>
         <form action="" className='modalBottom'>

@@ -4,19 +4,15 @@
 	align-items: center;
 	padding: 50px;
 	width: 100%;
-	gap: 40px;
-	height: fit-content;
+	height: 100vh;
+	justify-content: space-between;
 }
 .modalTop{
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-}
-.cross {
-	right: 50px;
-	position: absolute;
+	height: 85%;
 }
 select {
 	width: 250px;
@@ -25,13 +21,36 @@ select {
 	margin-top: 40px;
 	border-radius: 30px;
 	padding-left: 30px;
+	border: 1px solid #d1d1d1;
+	font-size: 16px;
+	font-family: 'proximaNova regular';
+	color: #30343E;
+	background-color: #EDEDED;
+}
+.modalTask__editor-done{
+	color: #7927E0;
 }
 .modalTask__cards {
 	display: flex;
 	flex-direction: column;
+	height: 100%;
+	overflow-y: scroll;
 	gap: 10px;
 	width: 100%;
 	margin-top: 20px;
+}
+.modalTask__editor{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 5px;
+}
+.modalTask__editor p{
+	padding-right: 30px;
+	cursor: pointer;
+}
+.quill{
+	width: 100%;
 }
 .modalTask__card-users,
 .modalTask__card-desc {
@@ -78,4 +97,8 @@ select {
 	height: 60px;
 	border-radius: 30px;
 	border: none;
+	background-color: #7927E0;
+	font-size: 22px;
+	font-family: "proximaNova bold";
+	color: white;
 }
