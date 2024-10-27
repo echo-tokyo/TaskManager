@@ -28,6 +28,7 @@ if (isFioValid && isLoginValid && isPasswordValid && isRepeatPasswordValid && ar
         console.log(localStorage.getItem("access"))
         console.log(localStorage.getItem("refresh"))
     }) .catch(err => {
+        error.value = true
         console.log(err)
     })
     error.value = false
