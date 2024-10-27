@@ -14,29 +14,26 @@ COPY ./web_server/http_site.conf /etc/nginx/conf.d/http_site.conf
 RUN apk add npm
 
 
-# ---
-# vue
-# ---
+# --------
+# frontend
+# --------
 
-WORKDIR /app/frontend/vue
+WORKDIR /app/frontend
 
-COPY ./frontend/package.json .
+
+# install vue requirements
+COPY ./frontend/package.json ./vue
 RUN npm install
 
-COPY ./frontend .
+# install react requirements
+COPY ./frontend_react/package.json ./react
+RUN npm install
 
+
+# build vue
+COPY ./frontend ./vue
 RUN npm run build
 
-
-# -----
-# react
-# -----
-
-WORKDIR /app/frontend/react
-
-COPY ./frontend_react/package.json .
-RUN npm install
-
-COPY ./frontend_react .
-
+# build react
+COPY ./frontend_react ./react
 RUN npm run build
