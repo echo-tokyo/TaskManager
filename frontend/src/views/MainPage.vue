@@ -30,6 +30,11 @@ function getTasks(){
 }
 
 onMounted(() => {
+    () => {
+        if(localStorage.getItem('access') === null){
+            router.push('/signup')
+        }
+    }
     checkAuthorization()
     getTasks()
 })
@@ -58,7 +63,6 @@ function refreshAccessToken() {
     })
     .catch(function (error) {
       console.log(error)
-      router.push('/LogIn')
     })
 }
 
@@ -132,7 +136,6 @@ const queryVal = ref('')
                     </div>
                 </div>
                 <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
-                <h3 class="header-nav__exit">Выйти</h3>
             </div>
         </nav>
     </header>
