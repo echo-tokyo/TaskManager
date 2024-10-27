@@ -24,13 +24,13 @@ from users.views import CustomUserAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
-    path('api/ping/', PingView.as_view(), name='ping'),
-    path('api/users/', CustomUserAPIView.as_view(), name='users'),
-    path('api/boards/', BoardView.as_view(), name='boards'),
-    re_path('api/tasks(/(?P<pk>\d+))?/?$', TaskAPIView.as_view(), name='tasks'),
+    path('api/v1/ping/', PingView.as_view(), name='ping'),
+    path('api/v1/users/', CustomUserAPIView.as_view(), name='users'),
+    path('api/v1/boards/', BoardView.as_view(), name='boards'),
+    re_path('api/v1/tasks(/(?P<pk>\d+))?/?$', TaskAPIView.as_view(), name='tasks'),
 
 ]

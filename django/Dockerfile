@@ -18,11 +18,11 @@ RUN apt-get update && \
 
 WORKDIR /app/backend
 
-COPY . .
-
+COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+
+COPY . .
 
 USER root
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]
-
