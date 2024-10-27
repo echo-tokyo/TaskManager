@@ -153,7 +153,7 @@ const isIframeActivated = ref(false)
 .container-for-tasks {
     overflow: scroll;
     overflow-x: hidden;
-    height: 71%;
+    height: 100%;
     padding-right: 5px;
 }
 
@@ -175,11 +175,13 @@ const isIframeActivated = ref(false)
 
 .card {
     padding-top: 20px;
+    padding-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 22vw;
     height: 75vh;
+    justify-content: space-between;
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 4px 9px 0 rgba(201, 194, 194, 0.7);
