@@ -1,13 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
-import Test from './Test'
 
 const Router = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path='/modal' element={<App />}/>
-				<Route path='/test' element={<Test />}/>
 			</Routes>
 		</BrowserRouter>
 	)
