@@ -31,7 +31,10 @@ const isIframeActivated = ref(false)
 </script>
 <template>
     <div class="modal-container" v-if="isModalActivated || isIframeActivated" @click="isModalActivated = false, isIframeActivated = false"></div>
-    <iframe class="iframe" src="http://192.168.30.4:5173/" frameborder="0" v-if="isIframeActivated"></iframe>
+    <div class="iframe-wrapper" v-if="isIframeActivated">
+        <iframe class="iframe" src="http://192.168.30.4:5173/" frameborder="0" ></iframe>
+        <img src="../../public/cross.svg" alt="">
+    </div>
     <div class="modal" v-if="isModalActivated">
         <h2>Добавить задачу</h2>
         <input type="text" name="" id="" placeholder="Название задачи" v-model="nameOfTheTaskInModal">
@@ -64,6 +67,29 @@ const isIframeActivated = ref(false)
 </template>
 
 <style>
+.iframe-wrapper{
+    border-radius: 20px;
+    left: 15vw;
+    top: 10vh;
+    position: absolute;
+    background-color: #fff;
+    width: 70vw;
+    height: 80vh;
+    z-index: 11;
+}
+.iframe {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.iframe-wrapper img{
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
 .card-top{
     display: flex;
     flex-direction: column;
@@ -78,16 +104,6 @@ const isIframeActivated = ref(false)
     background-color: #f4f3f3;
     width: 0px;
     height: 0px;
-}
-.iframe {
-    border-radius: 20px;
-    left: 15vw;
-    top: 10vh;
-    position: absolute;
-    background-color: #fff;
-    width: 70vw;
-    height: 80vh;
-    z-index: 11;
 }
 .modal-container{
     display: flex;
@@ -144,6 +160,7 @@ const isIframeActivated = ref(false)
     transition-duration: 0.3s;
 }
 .add-task {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
