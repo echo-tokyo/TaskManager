@@ -1,6 +1,66 @@
 <script setup>
 import Card from '../components/Card.vue'
 import {onMounted, ref, computed} from 'vue'
+import { useRouter } from 'vue-router';
+import axios from 'axios'
+
+const router = useRouter();
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access')
+
+const rowTasks = ref({
+    backlog: [],
+    proccessing: [],
+    finished: []
+})
+
+function getTasks(){
+    axios.get('http://193.188.23.216/api/v1/tasks/')
+        .then(res => {
+            console.log(res)
+            rowTasks.value.backlog = res.data.backlog
+            rowTasks.value.proccessing = res.data.proccessing
+            rowTasks.value.finished = res.data.finished
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+onMounted(() => {
+    checkAuthorization()
+    getTasks()
+})
+
+function checkAuthorization() {
+  axios
+    .post('http://193.188.23.216/api/v1/token/verify/', {
+      token: localStorage.getItem('access')
+    })
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+      if (error.response.status === 401) {
+        refreshAccessToken()
+      }
+    })
+}
+function refreshAccessToken() {
+  axios
+    .post('http://193.188.23.216/api/v1/token/refresh/', {
+      refresh: localStorage.getItem('refresh')
+    })
+    .then(function (response) {
+      localStorage.setItem('access', response.data.access)
+    })
+    .catch(function (error) {
+      console.log(error)
+      router.push('/LogIn')
+    })
+}
+
 
 const tasks = ref({
     backlog:[
@@ -30,20 +90,15 @@ const searchInput = document.querySelector('.search')
  
 const queryVal = ref('')
 
-    function search(e) { 
-        const tasksOnPage = document.querySelectorAll('.container-for-task')
-
-        console.log(queryVal.value)
-        console.log(tasksOnPage)
-        Array.from(tasksOnPage).forEach(task => { 
-            const taskText = task.textContent.toLowerCase(); 
-            console.log(task.textContent.toLowerCase())
-            if (taskText.includes(queryVal.value.toLowerCase())) { 
-                task.style.display = 'block' 
-            } else { 
-                task.style.display = 'none' 
-            } 
-        }) 
+    function search() { 
+        const tasksTitles = document.querySelectorAll('.task-title')
+        tasksTitles.forEach(el => {
+            if (el.textContent.toLowerCase().includes(queryVal.value.toLowerCase())) {
+                el.parentElement.parentElement.style.display = 'block'
+            } else {
+                el.parentElement.parentElement.style.display = 'none'
+            }
+        })
     }
     const selectedOption = ref('')
     const minMaxDate = ref({
@@ -64,22 +119,27 @@ const queryVal = ref('')
     <header class="header">
         <nav class="header-nav">
             <a href="https://webpractik.ru/" target="_blank" title="Сайт вебпрактик"><img class="header-nav__logo" src="../../public/logo.svg" alt="webpractice logo"></a>
-            <div class="header-nav__date">
-                <p>С</p>
-                <input class="header-nav__date-input" @input="inputDateFrom" type="date" :max="minMaxDate.max"/>
-                <p>По</p>
-                <input class="header-nav__date-input" @input="inputDateTo" type="date" :min="minMaxDate.min"/>
+            <div class="header-nav__right">
+                <div class="header-nav__date">
+                    <div class="header-nav__item">
+                        <p>С</p>
+                        <input class="header-nav__date-input" @input="inputDateFrom" type="date" :max="minMaxDate.max"/>
+                    </div>
+                    <div class="header-nav__item">
+                        <p>По</p>
+                        <input class="header-nav__date-input" @input="inputDateTo" type="date" :min="minMaxDate.min"/>
+                    </div>
+                </div>
+                <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
+                <h3 class="header-nav__exit">Выйти</h3>
             </div>
-            <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
-            <p>{{ searchInput }}</p>
-            <h3 class="header-nav__exit">Выйти</h3>
         </nav>
     </header>
     <main>
         <div class="card-container" >
-            <Card title="Беклог" :tasks="tasks.backlog" :selectedOption="selectedOption"/>
-            <Card title="В процессе" :tasks="tasks.proccessing" :selectedOption="selectedOption"/>
-            <Card title="Завершено" :tasks="tasks.finished" :selectedOption="selectedOption"/>
+            <Card :getRows="getTasks" title="Беклог" :tasks="rowTasks.backlog" :selectedOption="selectedOption"/>
+            <Card :getRows="getTasks" title="В процессе" :tasks="rowTasks.proccessing" :selectedOption="selectedOption"/>
+            <Card :getRows="getTasks" title="Завершено" :tasks="rowTasks.finished" :selectedOption="selectedOption"/>
         </div>
     </main>
 
@@ -89,25 +149,42 @@ const queryVal = ref('')
 .header-nav__date{
     display: flex;
     align-items: center;
-    gap:5px;
+    gap: 10px;
+}
+input[type='date']::-webkit-datetime-edit {
+    color: #566369;
+}
+input[type='date']::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding-right: 20px;
+}
+.header-nav__right{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.header-nav__item{
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 .header-nav__date input{
     height: 30px;
     border-radius: 30px;
     border: 1px solid #d1d1d1;
-    padding-left: 15px;
+    padding-left: 20px;
 }
 #filter{
     height: 30px;
     border-radius: 30px;
     border: 1px solid #d1d1d1;
-    padding-left: 15px;
+    padding-left: 20px;
 }
 .search{
     height: 30px;
     border-radius: 30px;
     border: 1px solid #d1d1d1;
-    padding-left: 15px;
+    padding-left: 20px;
     width: 250px;
 
 }
@@ -119,8 +196,8 @@ const queryVal = ref('')
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: 230px;
+    margin-right: 230px;
 }
 .header-nav__logo{
     width: 200px;
@@ -148,8 +225,8 @@ const queryVal = ref('')
 .card-container {
     display: flex;
     justify-content: space-between;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: 230px;
+    margin-right: 230px;
 }
 main {
     margin-top: 20px;
