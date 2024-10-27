@@ -5,6 +5,7 @@ import Task from '../components/Task.vue'
 import axios from 'axios';
 const props = defineProps({
     getRows: Function,
+    required: true,
     title: String,
     tasks: Object,
     selectedOption: String,
@@ -74,6 +75,7 @@ function addTask() {
             .then(function (response) {
                 console.log(response)
                 props.tasks.push(response.data)
+                props.getRows()
             })
             .catch(function (error) {
                 console.log(error)
@@ -88,7 +90,8 @@ function addTask() {
         })
             .then(function (response) {
                 console.log(response)
-                props.tasks.push({title: nameOfTheTaskInModal.value, executors:[], date: Date.now()})
+                props.tasks.push(response.data)
+                props.getRows()
             })
             .catch(function (error) {
                 console.log(error)
@@ -105,6 +108,7 @@ function addTask() {
                 console.log(response)
                 // props.tasks.push({title: nameOfTheTaskInModal.value, executors:[], taskId: response.data.id, date: Date.now()})
                 props.tasks.push(response.data)
+                props.getRows()
             })
             .catch(function (error) {
                 console.log(error)
@@ -124,7 +128,7 @@ const isIframeActivated = ref(false)
 <template>
     <div class="modal-container" v-if="isModalActivated || isIframeActivated" @click="isModalActivated = false, isIframeActivated = false"></div>
     <div class="iframe-wrapper" v-if="isIframeActivated">
-        <iframe class="iframe" :src="'http://192.168.30.4:5173/?task_id=' + currentTask" frameborder="0" ></iframe>
+        <iframe class="iframe" :src="'http://192.168.30.4/modal/?task_id=' + currentTask +'&access='+ localStorage.getItem('access')" frameborder="0" ></iframe>
         <img src="../../public/cross.svg" alt="" @click="isIframeActivated = false">
     </div>
     <div class="modal" v-if="isModalActivated">

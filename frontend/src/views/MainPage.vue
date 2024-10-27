@@ -15,6 +15,7 @@ const rowTasks = ref({
 })
 
 function getTasks(){
+    console.log('get tasks')
     axios.get('http://193.188.23.216/api/v1/tasks/')
         .then(res => {
             console.log(res)
@@ -24,6 +25,7 @@ function getTasks(){
         })
         .catch(err => {
             console.log(err)
+            checkAuthorization()
         })
 }
 
@@ -42,9 +44,8 @@ function checkAuthorization() {
     })
     .catch(function (error) {
       console.log(error)
-      if (error.response.status === 401) {
-        refreshAccessToken()
-      }
+      refreshAccessToken()
+
     })
 }
 function refreshAccessToken() {
