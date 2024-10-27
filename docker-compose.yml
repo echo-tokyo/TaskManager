@@ -45,8 +45,8 @@ services:
 
   web_server:
     build:
-      context: ./web_server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./web_server/Dockerfile
     container_name: task_manager_nginx
     restart: always
     ports:
