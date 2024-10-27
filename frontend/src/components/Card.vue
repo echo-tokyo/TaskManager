@@ -48,6 +48,7 @@ const isIframeActivated = ref(false)
             :list="props.tasks"
             group="people"
             @change="log"
+            
             :itemKey="props.title" >
                 <template  #item="{ element: tasks }" tag="div">
                     <Task @click="(event) => onTaskClicked(event), isIframeActivated = true" :task="tasks"/>
@@ -157,12 +158,14 @@ const isIframeActivated = ref(false)
     font-size: 16px;
     transition-duration: 0.3s;
 }
-
+/* 
 .add-task:hover{
     cursor: pointer;
     box-shadow: 0 4px 9px 0 rgba(201, 194, 194, 0.7);
+    background-color: #7927E0;
+    color: white;
     transition-duration: 0.3s;
-}
+} */
 
 
 .container-for-tasks:empty {
@@ -173,7 +176,6 @@ const isIframeActivated = ref(false)
 .container-for-tasks {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     gap: 8px;
     overflow: scroll;
     overflow-x: hidden;
