@@ -15,6 +15,7 @@ const rowTasks = ref({
 })
 
 function getTasks(){
+    console.log('get tasks')
     axios.get('http://193.188.23.216/api/v1/tasks/')
         .then(res => {
             console.log(res)
@@ -24,10 +25,16 @@ function getTasks(){
         })
         .catch(err => {
             console.log(err)
+            checkAuthorization()
         })
 }
 
 onMounted(() => {
+    () => {
+        if(localStorage.getItem('access') === null){
+            router.push('/signup')
+        }
+    }
     checkAuthorization()
     getTasks()
 })
@@ -42,9 +49,8 @@ function checkAuthorization() {
     })
     .catch(function (error) {
       console.log(error)
-      if (error.response.status === 401) {
-        refreshAccessToken()
-      }
+      refreshAccessToken()
+
     })
 }
 function refreshAccessToken() {
@@ -57,7 +63,6 @@ function refreshAccessToken() {
     })
     .catch(function (error) {
       console.log(error)
-      router.push('/LogIn')
     })
 }
 
@@ -131,7 +136,6 @@ const queryVal = ref('')
                     </div>
                 </div>
                 <div><input @input="search" v-model="queryVal" class="search" type="text" placeholder="Найти"></div>
-                <h3 class="header-nav__exit">Выйти</h3>
             </div>
         </nav>
     </header>

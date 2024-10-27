@@ -22,6 +22,7 @@ function goOnTheMainPage(){
             router.push('/')
         }) .catch(err => {
             console.log(err)
+            error.value = true
         })
         error.value = false
     } else {
