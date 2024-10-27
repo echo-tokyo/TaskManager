@@ -2,7 +2,6 @@
 	font-family: 'proximaNova regular'; 
 	src: url(../fonts/proximanova_regular.ttf); 
 }
- 
 @font-face {
 	font-family: 'proximaNova bold'; 
 	src: url(../fonts/proximanova_bold.otf); 
@@ -10,12 +9,12 @@
 body, html, #root{
 	width: 100vw;
 	height: 100%;
+	overflow: hidden;
 }
 h1{
 	font-size: 66px;
 	font-family: "proximaNova bold";
 }
-
 h2{
 	font-size: 32px;
 	font-family: "proximaNova bold", sans-serif;
@@ -26,8 +25,27 @@ h3 {
 	font-family: "proximaNova bold";
 }
 
-p, a{
+p, a, .description-preview{
 	font-size: 16px;
 	font-family: 'proximaNova regular';
-	color: black;
+	color: #30343E;
+}
+input, select, img, .modalBottom p{
+	cursor: pointer;
+}
+.modalTask__card-item input{
+	display: inline-block;
+	border-radius: 30px;
+	border: 1px solid #d1d1d1;
+	font-size: 16px;
+	font-family: 'proximaNova regular';
+	color: #30343E;
+	width: 100px;
+	padding: 0px 10px;
+	text-align: center;
+	background-color: #EDEDED;
+}
+input:focus {
+	outline: none; /* Убирает стандартный контур */
+	border: 1px solid #656565; /* Устанавливает желаемый стиль бордера */
 }
