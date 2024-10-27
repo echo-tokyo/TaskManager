@@ -38,16 +38,17 @@ function deleteTask(){
     position: absolute;
     right: 10px;
     width: 15px;
+    cursor: pointer;
 }
-#cross:hover{
+/* #cross:hover{
     height: 18px;
     transition-duration: 0.2s;
-}
-.container-for-task:hover{
+} */
+/* .container-for-task:hover{
     cursor:pointer;
     box-shadow: 0 2px 4px 0 rgba(201, 194, 194, 0.7);
     transition-duration: 0.1s;
-}
+} */
 .task-text{
     display: flex;
     flex-direction: column;
@@ -75,7 +76,7 @@ function deleteTask(){
 }
 .container-for-task{
     position: relative;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     border: 1px solid #D1D1D1;
     height: 50px;
     width: 15vw;

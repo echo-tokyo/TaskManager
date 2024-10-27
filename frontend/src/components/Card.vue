@@ -151,6 +151,9 @@ const isIframeActivated = ref(false)
 
 }
 .container-for-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     overflow: scroll;
     overflow-x: hidden;
     height: 100%;
