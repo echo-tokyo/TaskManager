@@ -31,6 +31,7 @@ if (isFioValid && isLoginValid && isPasswordValid && isRepeatPasswordValid && ar
         console.log(err)
     })
     error.value = false
+    router.push('/')
 } else {
     error.value = true
 }

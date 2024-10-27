@@ -2,35 +2,126 @@
 import { defineProps, ref, onMounted, computed, watch } from 'vue'
 import draggable from "vuedraggable"
 import Task from '../components/Task.vue'
+import axios from 'axios';
 const props = defineProps({
+    getRows: Function,
     title: String,
     tasks: Object,
     selectedOption: String,
 })
 function log(event) {
-}
+    let res = props.tasks
+    if (event.added) {
+        if (props.title == 'Беклог') {
+            event.added.element.status = 'backlog'
+            axios.patch('http://193.188.23.216/api/v1/tasks/' + event.added.element.id, event.added.element)
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        } else if (props.title == 'В процессе') {
+            event.added.element.status = 'proccessing'
+            axios.patch('http://193.188.23.216/api/v1/tasks/' + event.added.element.id, event.added.element)
+        } else if (props.title == 'Завершено') {
+            event.added.element.status = 'finished'
+            axios.patch('http://193.188.23.216/api/v1/tasks/' + event.added.element.id, event.added.element)
+        }
 
+
+        // console.log(props.title)
+        // console.log(event.added.element.id)
+        // console.log(props.tasks) 
+        // props.tasks[0].status
+        // for(let i = 0; i < props.tasks.length; i++) {
+        //     if(props.tasks[i].id !== event.added.element.id) {
+        //         event.added.element.status = props.tasks[i].status;
+        //         console.log(props.tasks[i].status)
+        //         axios.patch('http://193.188.23.216/api/v1/tasks/' + event.added.element.id, event.added.element)
+        //         .then(function (response) {
+        //             console.log(response)
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error)
+        //         })
+        //         break
+        //     }   else{
+        //         continue;
+        //     }
+        // }
+    }
+}
 watch(props.tasks, () => {
     console.log(props.tasks)
 })
 
 const nameOfTheTaskInModal = ref('')
 function addTask() {
-    if(nameOfTheTaskInModal.value == ''){
-        props.tasks.push({title: "Без названия", executor:"", date: Date.now()})
-    }   else {
-        props.tasks.push({title: nameOfTheTaskInModal.value, executor:"", date: Date.now()})
+    // if(nameOfTheTaskInModal.value == ''){
+    //     props.tasks.push({title: "Без названия", executor:"", date: Date.now()})
+    // }   else {
+    //     props.tasks.push({title: nameOfTheTaskInModal.value, executor:"", date: Date.now()})
+    // }
+    if (props.title == 'Беклог') {
+        axios.post('http://193.188.23.216/api/v1/tasks/', {
+            board_id: 1,
+            title: nameOfTheTaskInModal.value,
+            task_desc: "",
+            executors:[],
+            status: "backlog",
+        })
+            .then(function (response) {
+                console.log(response)
+                props.tasks.push(response.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    } else if (props.title == 'В процессе') {
+        axios.post('http://193.188.23.216/api/v1/tasks/', {
+            board_id: 1,
+            title: nameOfTheTaskInModal.value,
+            task_desc: "",
+            executors: [],
+            status: "proccessing",
+        })
+            .then(function (response) {
+                console.log(response)
+                props.tasks.push({title: nameOfTheTaskInModal.value, executors:[], date: Date.now()})
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    } else if (props.title == 'Завершено') {
+        axios.post('http://193.188.23.216/api/v1/tasks/', {
+            board_id: 1,
+            title: nameOfTheTaskInModal.value,
+            task_desc: "",
+            executors: [],
+            status: "finished",
+        })
+            .then(function (response) {
+                console.log(response)
+                // props.tasks.push({title: nameOfTheTaskInModal.value, executors:[], taskId: response.data.id, date: Date.now()})
+                props.tasks.push(response.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
+
 }
 
-function onTaskClicked(e){
+function onTaskClicked(e) {
     console.log(e)
 }
 const isModalActivated = ref(false)
 const isIframeActivated = ref(false)
 </script>
 <template>
-    <div class="modal-container" v-if="isModalActivated || isIframeActivated" @click="isModalActivated = false, isIframeActivated = false"></div>
+    <div class="modal-container" v-if="isModalActivated || isIframeActivated"
+        @click="isModalActivated = false, isIframeActivated = false"></div>
     <iframe class="iframe" src="http://192.168.30.4:5173/" frameborder="0" v-if="isIframeActivated"></iframe>
     <div class="modal" v-if="isModalActivated">
         <h2>Добавить задачу</h2>
@@ -40,15 +131,9 @@ const isIframeActivated = ref(false)
     <div class="card">
         <h3 class="card__title">{{ props.title }}</h3>
 
-        <draggable     
-            
-        class="container-for-tasks"
-        :list="props.tasks"
-        group="people"
-        @change="log"
-        :itemKey="props.title" >
-            <template  #item="{ element: tasks }" tag="div">
-                <Task @click="(event) => onTaskClicked(event), isIframeActivated = true" :task="tasks"/>
+        <draggable class="container-for-tasks" :list="props.tasks" group="people" @change="log" :itemKey="props.title">
+            <template #item="{ element: tasks }" tag="div">
+                <Task @click="(event) => onTaskClicked(event), isIframeActivated = true" :task="tasks" />
             </template>
         </draggable>
         <!-- <div :class="'container-for-tasks'">
@@ -70,7 +155,8 @@ const isIframeActivated = ref(false)
     height: 80vh;
     z-index: 11;
 }
-.modal-container{
+
+.modal-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,7 +168,8 @@ const isIframeActivated = ref(false)
     z-index: 10;
     background-color: rgba(0, 0, 0, 0.3);
 }
-.modal{
+
+.modal {
     padding-top: 40px;
     padding-bottom: 20px;
     display: flex;
@@ -98,6 +185,7 @@ const isIframeActivated = ref(false)
     height: 55vh;
     z-index: 11;
 }
+
 .modal input[type="text"] {
     height: 60px;
     width: 85%;
@@ -107,6 +195,7 @@ const isIframeActivated = ref(false)
     padding-left: 20px;
     margin-bottom: 20px;
 }
+
 .modal input[type="button"] {
     height: 60px;
     width: 20%;
@@ -119,11 +208,13 @@ const isIframeActivated = ref(false)
     background-color: #7927E0;
     transition-duration: 0.3s;
 }
+
 .modal input[type="button"]:hover {
-    cursor:pointer;
+    cursor: pointer;
     background-color: #914ee2;
     transition-duration: 0.3s;
 }
+
 .add-task {
     display: flex;
     justify-content: center;
@@ -138,7 +229,7 @@ const isIframeActivated = ref(false)
     transition-duration: 0.3s;
 }
 
-.add-task:hover{
+.add-task:hover {
     cursor: pointer;
     box-shadow: 0 4px 9px 0 rgba(201, 194, 194, 0.7);
     transition-duration: 0.3s;
@@ -150,6 +241,7 @@ const isIframeActivated = ref(false)
     overflow-x: hidden;
 
 }
+
 .container-for-tasks {
     overflow: scroll;
     overflow-x: hidden;

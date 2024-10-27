@@ -3,15 +3,29 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import PopUp from '../components/PopUp.vue';
+import axios from 'axios'
+import { user } from '@/stores/counter';
+
 const router = useRouter();
 
 
 const error = ref(false)
 function goOnTheMainPage(){
-    if(loginUserData.value.login < 4 || loginUserData.value.password.length < 8) {
-        error.value = true
-    } else {
+    if(loginUserData.value.login > 1 || loginUserData.value.password.length > 1) {
+        axios.post('http://193.188.23.216/api/v1/token/', {
+            username: loginUserData.value.login,
+            password: loginUserData.value.password
+        }) .then(res => {
+            localStorage.setItem('access', res.data.access)
+            localStorage.setItem('refresh', res.data.refresh)
+            console.log(res)
+            router.push('/')
+        }) .catch(err => {
+            console.log(err)
+        })
         error.value = false
+    } else {
+        error.value = true
     }
 }
 const loginUserData = ref({

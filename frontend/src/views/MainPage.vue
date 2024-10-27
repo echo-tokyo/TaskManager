@@ -1,12 +1,66 @@
 <script setup>
 import Card from '../components/Card.vue'
 import {onMounted, ref, computed} from 'vue'
+import { useRouter } from 'vue-router';
+import axios from 'axios'
+
+const router = useRouter();
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access')
+
+const rowTasks = ref({
+    backlog: [],
+    proccessing: [],
+    finished: []
+})
 
 function getTasks(){
-    axios.get('http://193.188.23.216/api/v1/tasks/', {
-        headers
+    axios.get('http://193.188.23.216/api/v1/tasks/')
+        .then(res => {
+            console.log(res)
+            rowTasks.value.backlog = res.data.backlog
+            rowTasks.value.proccessing = res.data.proccessing
+            rowTasks.value.finished = res.data.finished
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+onMounted(() => {
+    checkAuthorization()
+    getTasks()
+})
+
+function checkAuthorization() {
+  axios
+    .post('http://193.188.23.216/api/v1/token/verify/', {
+      token: localStorage.getItem('access')
+    })
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+      if (error.response.status === 401) {
+        refreshAccessToken()
+      }
     })
 }
+function refreshAccessToken() {
+  axios
+    .post('http://193.188.23.216/api/v1/token/refresh/', {
+      refresh: localStorage.getItem('refresh')
+    })
+    .then(function (response) {
+      localStorage.setItem('access', response.data.access)
+    })
+    .catch(function (error) {
+      console.log(error)
+      router.push('/LogIn')
+    })
+}
+
 
 const tasks = ref({
     backlog:[
@@ -77,9 +131,9 @@ const queryVal = ref('')
     </header>
     <main>
         <div class="card-container" >
-            <Card title="Беклог" :tasks="tasks.backlog" :selectedOption="selectedOption"/>
-            <Card title="В процессе" :tasks="tasks.proccessing" :selectedOption="selectedOption"/>
-            <Card title="Завершено" :tasks="tasks.finished" :selectedOption="selectedOption"/>
+            <Card :getRows="getTasks" title="Беклог" :tasks="rowTasks.backlog" :selectedOption="selectedOption"/>
+            <Card :getRows="getTasks" title="В процессе" :tasks="rowTasks.proccessing" :selectedOption="selectedOption"/>
+            <Card :getRows="getTasks" title="Завершено" :tasks="rowTasks.finished" :selectedOption="selectedOption"/>
         </div>
     </main>
 
