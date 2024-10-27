@@ -1,0 +1,15 @@
+# Logs
+*.log
+
+# Environments
+.env
+env/
+ENV/
+
+
+
+# Venv
+venv/
+.env
+# Pycharm
+.idea/
