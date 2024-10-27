@@ -50,7 +50,7 @@ function checkAuthorization() {
     .catch(function (error) {
       console.log(error)
       refreshAccessToken()
-
+      router.push('/signup')
     })
 }
 function refreshAccessToken() {
