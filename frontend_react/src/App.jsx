@@ -1,34 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import ReactQuill from 'react-quill'
+import axios from 'axios'
 
 function App() {
   // FIXME: старая библа или код quill, заменить в будущем
   const urlParams = new URLSearchParams(window.location.search)
   const taskId = urlParams.get('task_id')
-  console.log(taskId)
+  const accessToken = urlParams.get('access') 
   
+  const [taskName, setTaskName] = useState('Название задачи')
   const [isEditing, setIsEditing] = useState(false)
+  const [selectedData, setSelectedData] = useState('backlog')
   const [isAdding, setIsAdding] = useState(false)
   const [inpVal, setInpVal] = useState('')
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: 'Иван',
-    },
-    {
-      id: 2,
-      name: 'Иван2',
-    },
-    {
-      id: 3,
-      name: 'Иван3',
-    }
-  ])
+  const [users, setUsers] = useState([])
+  const allUsers = useRef(null)
   
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      setUsers(prev => [...prev, {id: Date.now(), name: inpVal}])
+      setUsers(prev => [...prev, {id: Date.now(), username:'username', fio: inpVal, is_staff: false, job_title: 'Не указано'}])
       setInpVal('')
     }
   }
@@ -61,22 +52,85 @@ function App() {
     "size",
     "font"
   ];
-  const [code, setCode] = useState('ыыыыыыыыы ыыыыыыы');
+
+  useEffect(() => {
+    axios.get(`http://193.188.23.216/api/v1/tasks/${taskId}/`, {
+      headers: {'Authorization': `Bearer ${accessToken}`}
+    })
+    .then((res) => {
+      console.log(res.data)
+      setCode(res.data.task_desc);
+      setUsers(res.data.executors);
+      setTaskName(res.data.title);
+      setSelectedData(res.data.status)
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+    axios.get('http://193.188.23.216/api/v1/users/', {
+        headers: {'Authorization': `Bearer ${accessToken}`}
+    })
+    .then(res => {
+        allUsers.current = res.data
+        console.log(res.data)
+    })
+    .catch(err => {
+        console.error(err);
+    });
+  }, [])
+
+  // TODO: в инишиал ставить данные с сервера
+  const [code, setCode] = useState('');
   // eslint-disable-next-line no-unused-vars
   const handleProcedureContentChange = (content, delta, source, editor) => {
     setCode(content);
   };
-  
+
   const getSelectData = (e) => {
-    console.log(e.target.value)
+    setSelectedData(e.target.value)
+  }
+  
+  const handleSubmit = () => {
+    const formData = {
+      id: Number(taskId),
+      board_id: 1,
+      title: taskName,
+      task_desc: code,
+      status: selectedData,
+      executors: users,
+    }
+    
+    axios.patch(`http://193.188.23.216/api/v1/tasks/${taskId}/`, formData, {headers: {'Authorization': `Bearer ${accessToken}`}
+    })
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((err)=>{
+      console.error("Ошибка", err)
+    })
+  }
+
+  const checkUsers = (e) => {
+    e.preventDefault()
+    const allFios = allUsers.current.map(user => user.fio)
+    const allMatch = users.every(user => allFios.includes(user.fio))
+
+    if(allMatch === true){
+      handleSubmit()
+    }
+    else{
+      alert('Такого пользователя нет')
+      location.reload()
+    }
   }
   
   return (
     <>
       <div className="modalTask">
         <div className="modalTop">
-          <h2 className=''>Заголовок задачи</h2>
-          <select name="status" id="" onChange={(e) => getSelectData(e)}>
+          <h2 className=''>{taskName}</h2>
+          <select name="status" id="" value={selectedData} onChange={(e) => getSelectData(e)}>
             <option value="backlog">Беклог</option>
             <option value="processing">В процессе</option>
             <option value="finished">Завершено</option>
@@ -88,7 +142,7 @@ function App() {
                 <img src="../public/plus-large-svgrepo-com 1.svg" alt="" onClick={() => setIsAdding(!isAdding)}/>
               </div>
               <div className="modalTask__card-item">
-                {users.map((el, index) => <p key={el.id}>{el.name}{index !== users.length - 1 && ', '}</p>)}
+                {users.map((el, index) => <p key={el.id}>{el.fio}{index !== users.length - 1 && ', '}</p>)}
                 {isAdding &&
                 <input type="text" placeholder='ФИО' value={inpVal} onChange={(e) => setInpVal(e.target.value)} onKeyDown={(e)=> handleKeyDown(e)}/>
                 }
@@ -118,7 +172,7 @@ function App() {
             </div>)}
           </div>
         </div>
-        <form action="" className='modalBottom'>
+        <form action="" className='modalBottom' onSubmit={(e) => checkUsers(e)}>
           <input type="submit" value='Сохранить'/>
           <p>Удалить задачу</p>
         </form>
