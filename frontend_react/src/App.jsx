@@ -50,7 +50,7 @@ function App() {
     if (e.key === 'Enter') {
       const user = allUsers.current.find(user => user.fio === inpVal)
       if(user){
-        setUsers(prev => [...prev, {id: user.id, username:user.id, fio: inpVal, is_staff: user.is_staff, job_title: user.job_title}])
+        setUsers(prev => [...prev, {id: user.id, username:user.username, fio: inpVal, is_staff: user.is_staff, job_title: user.job_title}])
       }
       else{
         alert('Пользователь не найден')
