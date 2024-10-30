@@ -17,13 +17,6 @@ function App() {
   const [users, setUsers] = useState([])
   const allUsers = useRef(null)
   
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      setUsers(prev => [...prev, {id: Date.now(), username:'username', fio: inpVal, is_staff: false, job_title: 'Не указано'}])
-      setInpVal('')
-    }
-  }
-  
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -34,7 +27,7 @@ function App() {
       [{ background: ["red", "#785412"] }],
     ]
   };
-
+  
   const formats = [
     "header",
     "bold",
@@ -52,6 +45,20 @@ function App() {
     "size",
     "font"
   ];
+  
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      const user = allUsers.current.find(user => user.fio === inpVal)
+      if(user){
+        setUsers(prev => [...prev, {id: user.id, username:user.id, fio: inpVal, is_staff: user.is_staff, job_title: user.job_title}])
+      }
+      else{
+        alert('Пользователь не найден')
+      }
+      setInpVal('')
+    }
+  }
+  console.log(users)
 
   useEffect(() => {
     axios.get(`http://193.188.23.216/api/v1/tasks/${taskId}/`, {
@@ -91,7 +98,8 @@ function App() {
     setSelectedData(e.target.value)
   }
   
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     const formData = {
       id: Number(taskId),
       board_id: 1,
@@ -111,19 +119,19 @@ function App() {
     })
   }
 
-  const checkUsers = (e) => {
-    e.preventDefault()
-    const allFios = allUsers.current.map(user => user.fio)
-    const allMatch = users.every(user => allFios.includes(user.fio))
+  // const checkUsers = (e) => {
+  //   e.preventDefault()
+  //   const allFios = allUsers.current.map(user => user.fio)
+  //   const allMatch = users.every(user => allFios.includes(user.fio))
 
-    if(allMatch === true){
-      handleSubmit()
-    }
-    else{
-      alert('Указанного пользователя нет')
-      location.reload()
-    }
-  }
+  //   if(allMatch === true){
+  //     handleSubmit()
+  //   }
+  //   else{
+  //     alert('Указанного пользователя нет')
+  //     location.reload()
+  //   }
+  // }
   
   const deleteTask = () => {
     axios.delete(`http://193.188.23.216/api/v1/tasks/${taskId}/`, {headers: {'Authorization': `Bearer ${accessToken}`}})
@@ -183,7 +191,7 @@ function App() {
             </div>)}
           </div>
         </div>
-        <form action="" className='modalBottom' onSubmit={(e) => checkUsers(e)}>
+        <form action="" className='modalBottom' onSubmit={(e) => handleSubmit(e)}>
           <input type="submit" value='Сохранить'/>
           <p onClick={() => deleteTask()}>Удалить задачу</p>
         </form>
