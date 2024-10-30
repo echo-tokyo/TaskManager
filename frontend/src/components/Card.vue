@@ -130,7 +130,7 @@ const isIframeActivated = ref(false)
 <template>
     <div class="modal-container" v-if="isModalActivated || isIframeActivated" @click="isModalActivated = false, isIframeActivated = false"></div>
     <div class="iframe-wrapper" v-if="isIframeActivated">
-        <iframe class="iframe" :src="'http://192.168.29.60:5173/modal/?task_id=' + currentTask +'&access='+  access" frameborder="0" ></iframe>
+        <iframe class="iframe" :src="'http://193.188.23.216/modal/?task_id=' + currentTask +'&access='+  access" frameborder="0" ></iframe>
         <img src="../../public/cross.svg" alt="" @click="isIframeActivated = false">
     </div>
     <div class="modal" v-if="isModalActivated">
