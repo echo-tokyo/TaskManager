@@ -121,12 +121,10 @@ const currentTask = ref()
 const access = ref(localStorage.getItem('access'))
 
 function onTaskClicked(e) {
-    console.log(localStorage.getItem('access'))
     isIframeActivated.value = true
     currentTask.value = e.srcElement.id
     console.log(currentTask.value)
 }
-const access = ref(localStorage.getItem('access'))
 
 const isModalActivated = ref(false)
 const isIframeActivated = ref(false)
