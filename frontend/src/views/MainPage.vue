@@ -63,6 +63,7 @@ function refreshAccessToken() {
     })
     .catch(function (error) {
       console.log(error)
+      router.push('/signup')
     })
 }
 
@@ -231,6 +232,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
     justify-content: space-between;
     margin-left: 230px;
     margin-right: 230px;
+    flex-wrap: wrap;
 }
 main {
     margin-top: 20px;
