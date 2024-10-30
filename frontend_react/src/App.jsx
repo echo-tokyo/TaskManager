@@ -7,7 +7,8 @@ function App() {
   // FIXME: старая библа или код quill, заменить в будущем
   const urlParams = new URLSearchParams(window.location.search)
   const taskId = urlParams.get('task_id')
-  const accessToken = urlParams.get('access') 
+  const accessToken = localStorage.getItem('access') 
+  console.log(accessToken)
   
   const [taskName, setTaskName] = useState('Название задачи')
   const [isEditing, setIsEditing] = useState(false)
@@ -69,14 +70,14 @@ function App() {
     });
 
     axios.get('http://193.188.23.216/api/v1/users/', {
-        headers: {'Authorization': `Bearer ${accessToken}`}
+      headers: {'Authorization': `Bearer ${accessToken}`}
     })
     .then(res => {
-        allUsers.current = res.data
-        console.log(res.data)
+      allUsers.current = res.data
+      console.log(res.data)
     })
     .catch(err => {
-        console.error(err);
+      console.error(err);
     });
   }, [])
 
@@ -120,11 +121,22 @@ function App() {
       handleSubmit()
     }
     else{
-      alert('Такого пользователя нет')
+      alert('Указанного пользователя нет')
       location.reload()
     }
   }
   
+  const deleteTask = () => {
+    axios.delete(`http://193.188.23.216/api/v1/tasks/${taskId}/`, {headers: {'Authorization': `Bearer ${accessToken}`}})
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err=>{
+      console.err(err)
+      alert('Задача удалена или попробуйде позже')
+    })
+  }
+
   return (
     <>
       <div className="modalTask">
@@ -132,14 +144,14 @@ function App() {
           <h2 className=''>{taskName}</h2>
           <select name="status" id="" value={selectedData} onChange={(e) => getSelectData(e)}>
             <option value="backlog">Беклог</option>
-            <option value="processing">В процессе</option>
+            <option value="proccessing">В процессе</option>
             <option value="finished">Завершено</option>
           </select>
           <div className="modalTask__cards">
             <div className="modalTask__card-users">
               <div className="modalTask__card-header">
                 <h3>Ответственный</h3>
-                <img src="../public/plus-large-svgrepo-com 1.svg" alt="" onClick={() => setIsAdding(!isAdding)}/>
+                <img src="../public/plus-large-svgrepo-com 1.svg" alt="add" onClick={() => setIsAdding(!isAdding)}/>
               </div>
               <div className="modalTask__card-item">
                 {users.map((el, index) => <p key={el.id}>{el.fio}{index !== users.length - 1 && ', '}</p>)}
@@ -153,7 +165,7 @@ function App() {
             <div className="modalTask__card-desc">
               <div className="modalTask__desc-header">
                 <h3>Описание</h3>
-                <img src="../public/edit-2-svgrepo-com 1.svg" alt="" onClick={() => setIsEditing(true)}/>
+                <img src="../public/edit-2-svgrepo-com 1.svg" alt="edit" onClick={() => setIsEditing(true)}/>
                 {/* <button onClick={() => setIsEditing(true)}>/</button> */}
               </div>
               <div className="description-preview" dangerouslySetInnerHTML={{ __html: code }}/>
@@ -174,7 +186,7 @@ function App() {
         </div>
         <form action="" className='modalBottom' onSubmit={(e) => checkUsers(e)}>
           <input type="submit" value='Сохранить'/>
-          <p>Удалить задачу</p>
+          <p onClick={() => deleteTask()}>Удалить задачу</p>
         </form>
       </div>
     </>

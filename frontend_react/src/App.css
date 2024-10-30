@@ -49,6 +49,10 @@ select {
 	padding-right: 30px;
 	cursor: pointer;
 }
+img{
+	height: 20px;
+	width: 20px;
+}
 .quill{
 	width: 100%;
 }
