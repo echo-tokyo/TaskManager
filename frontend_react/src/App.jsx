@@ -7,7 +7,7 @@ function App() {
   // FIXME: старая библа или код quill, заменить в будущем
   const urlParams = new URLSearchParams(window.location.search)
   const taskId = urlParams.get('task_id')
-  const accessToken = urlParams.get('access') 
+  const accessToken = localStorage.getItem('access')
   
   const [taskName, setTaskName] = useState('Название задачи')
   const [isEditing, setIsEditing] = useState(false)
